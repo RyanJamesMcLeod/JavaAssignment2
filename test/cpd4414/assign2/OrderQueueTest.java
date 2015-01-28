@@ -97,4 +97,29 @@ public class OrderQueueTest {
        
     }
     
+    @Test
+    public void RequestForOrderWhenOrderInSystemThenReturnOrder() throws Exception {
+        
+        OrderQueue orderQueue = new OrderQueue();
+        Order order = new Order("CUST00001", "ABC Construction");
+        order.addPurchase(new Purchase("PROD0004", 450));
+        order.addPurchase(new Purchase("PROD0006", 250));
+        orderQueue.add(order);
+        
+        Order result = order;
+        Order expResult = orderQueue.returnQueue();
+        assertEquals(result, expResult);
+        
+    }
+    
+    @Test
+    public void RequestForOrderWithNoOrderInSystemThenThrowException() {
+        OrderQueue orderQueue = new OrderQueue();
+        
+        Order expResult = orderQueue.returnQueue();
+        assertEquals(expResult, null);
+        
+        
+    }
+    
 }
