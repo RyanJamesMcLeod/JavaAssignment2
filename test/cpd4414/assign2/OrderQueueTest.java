@@ -227,4 +227,33 @@ public class OrderQueueTest {
         assertEquals(expResult, result);
     }
     
+    @Test
+    public void testRequestReportOfAllOrdersInQueueProcessedAndFulfilled() throws Exception {
+        OrderQueue orderQueue = new OrderQueue();
+        Order order = new Order("CUST00001", "ABC Construction");
+        order.addPurchase(new Purchase("PROD0004", 450));
+        order.addPurchase(new Purchase("PROD0006", 250));
+        orderQueue.add(order);
+        orderQueue.setTimeReceived(order);
+        
+        Order orderTwo = new Order("CUST00002", "DEF Incorporated");
+        orderTwo.addPurchase(new Purchase("PROD0002", 450));
+        orderTwo.addPurchase(new Purchase("PROD0006", 150));
+        orderQueue.add(orderTwo);
+        orderQueue.setTimeReceived(orderTwo);
+        
+        orderQueue.orderProcessed(order);
+        orderQueue.setTimeProcessed(order);
+        orderQueue.orderFulfilled(order);
+        orderQueue.setTimeFulfilled(order);
+        
+        Date timeNow = new Date();
+        String expResult = "{ orders : [{ \"customerId\" : CUST00002, \"customerName\" : DEF Incorporated, \"timeReceived\" : " + timeNow + ", \"timeProcessed\" : null, \"timeFulfilled\" : null, \"purchases\" : [{\"quantity\":150,\"productId\":\"PROD0006\"},{\"quantity\":150,\"productId\":\"PROD0006\"}], \"notes\" : null } , { \"customerId\" : CUST00001, \"customerName\" : ABC Construction, \"timeReceived\" : " + timeNow + ", \"timeProcessed\" : " + timeNow + ", \"timeFulfilled\" : " + timeNow + ", \"purchases\" : [{\"quantity\":250,\"productId\":\"PROD0006\"},{\"quantity\":250,\"productId\":\"PROD0006\"}], \"notes\" : null } ] }";
+        String result = orderQueue.toString();
+        System.out.println(result);
+        assertEquals(expResult, result);
+        
+        
+    }
+    
 }
