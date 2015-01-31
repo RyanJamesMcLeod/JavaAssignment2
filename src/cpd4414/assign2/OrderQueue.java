@@ -80,4 +80,35 @@ public class OrderQueue {
         return orderQueue.element();
         
     }
+    
+    @Override
+    public String toString() {
+        if (orderQueue.isEmpty() && processed.isEmpty() && fulfilled.isEmpty()) {
+            return "";
+        } else {
+            
+            StringBuilder sb = new StringBuilder();
+            sb.append("{ orders : [");
+            
+            if (!orderQueue.isEmpty()) {
+                for (Order o : orderQueue) {
+                    sb.append(o.toString() + " , ");
+                }
+            }
+            if (!processed.isEmpty()) {
+                for (Order o : processed) {
+                    sb.append(o.toString() + " , ");
+                }
+            }
+            if (!fulfilled.isEmpty()) {
+                for (Order o : fulfilled) {
+                    sb.append(o.toString() + " , ");
+                }
+            }
+            sb.setLength(Math.max(sb.length() - 2, 0));
+            sb.append("] }");
+            return sb.toString();
+        }
+
+    }
 }
