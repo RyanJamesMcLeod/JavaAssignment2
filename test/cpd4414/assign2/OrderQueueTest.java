@@ -159,4 +159,63 @@ public class OrderQueueTest {
         assertTrue(didthrow);
     }
     
+    @Test
+    public void TestRequestAnOrderWithTimeReceivedAndTimeProcessedThenSetTimeFulfilledToNow() throws Exception{
+        OrderQueue orderQueue = new OrderQueue();
+        Order order = new Order("CUST00001", "ABC Construction");
+        order.addPurchase(new Purchase("PROD0004", 450));
+        order.addPurchase(new Purchase("PROD0006", 250));
+        orderQueue.add(order);
+        orderQueue.setTimeReceived(order);
+        
+        orderQueue.orderProcessed(order);
+        orderQueue.setTimeProcessed(order);
+        
+        orderQueue.orderFulfilled(order);
+        orderQueue.setTimeFulfilled(order);
+        
+        long expResult = new Date().getTime();
+        long result = order.getTimeFulfilled().getTime();
+        assertTrue(Math.abs(result - expResult) < 1000);
+    }
+    
+    @Test
+    public void TestIfRequestTimeFulfilledIfNoTimeRecievedThenThrowAnException() throws Exception{
+        boolean didthrow = false;
+        OrderQueue orderQueue = new OrderQueue();
+        Order order = new Order("CUST00001", "ABC Construction");
+        order.addPurchase(new Purchase("PROD0004", 450));
+        order.addPurchase(new Purchase("PROD0006", 250));
+        orderQueue.add(order);
+        
+        try {
+            orderQueue.orderFulfilled(order);
+        }
+        catch (Exception ex){
+            didthrow = true;
+        }
+        assertTrue(didthrow);
+    }
+    
+    @Test
+    public void TestIfRequestTimeFulfilledIfNoTimeProcessedThenThrowAnException() throws Exception{
+        boolean didthrow = false;
+        OrderQueue orderQueue = new OrderQueue();
+        Order order = new Order("CUST00001", "ABC Construction");
+        order.addPurchase(new Purchase("PROD0004", 450));
+        order.addPurchase(new Purchase("PROD0006", 250));
+        orderQueue.add(order);
+        orderQueue.setTimeReceived(order);
+        
+        orderQueue.orderProcessed(order);
+        
+        try {
+            orderQueue.orderFulfilled(order);
+        }
+        catch (Exception ex){
+            didthrow = true;
+        }
+        assertTrue(didthrow);
+    }
+    
 }
