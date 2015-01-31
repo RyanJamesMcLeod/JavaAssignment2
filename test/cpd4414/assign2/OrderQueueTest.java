@@ -218,4 +218,13 @@ public class OrderQueueTest {
         assertTrue(didthrow);
     }
     
+    @Test
+    public void TestReturnEmptyStringWithNoOrdersReceivedProcessedOrFulfilled() {
+        OrderQueue orderQueue = new OrderQueue();
+        String expResult = "";
+        String result = orderQueue.toString();
+        
+        assertEquals(expResult, result);
+    }
+    
 }
