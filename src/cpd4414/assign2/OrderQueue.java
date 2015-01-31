@@ -17,7 +17,9 @@
 package cpd4414.assign2;
 
 import java.util.ArrayDeque;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 import java.util.Queue;
 
 /**
@@ -26,6 +28,8 @@ import java.util.Queue;
  */
 public class OrderQueue {
     Queue<Order> orderQueue = new ArrayDeque<>();
+    List<Order> processed = new ArrayList<>();
+    List<Order> fulfilled = new ArrayList<>();
     
     public void add(Order order) throws Exception {
         if (order.getCustomerId().isEmpty() && order.getCustomerName().isEmpty()) {
@@ -40,6 +44,18 @@ public class OrderQueue {
     
     public void setTimeReceived (Order order) {
         order.setTimeReceived(new Date());
+    }
+    
+    public void orderProcessed(Order order) throws Exception{
+        if (order.getTimeReceived() == null) {
+            throw new Exception("Order does not have a time received");
+        }
+        processed.add(order);
+        orderQueue.remove(order);
+    }
+    
+    public void setTimeProcessed (Order order) {
+        order.setTimeProcessed(new Date());
     }
     
     public Order returnQueue() {
