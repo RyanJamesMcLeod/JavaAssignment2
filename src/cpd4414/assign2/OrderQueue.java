@@ -58,6 +58,21 @@ public class OrderQueue {
         order.setTimeProcessed(new Date());
     }
     
+    public void orderFulfilled(Order order) throws Exception{
+        if (order.getTimeReceived() == null) {
+            throw new Exception("Order does not have a time received");
+        }
+        if (order.getTimeProcessed() == null) {
+            throw new Exception("Order does not have a time processed");
+        }
+        fulfilled.add(order);
+        processed.remove(order);
+    }
+    
+    public void setTimeFulfilled (Order order) {
+        order.setTimeFulfilled(new Date());
+    }
+    
     public Order returnQueue() {
         if (orderQueue.isEmpty()) {
             return null;
