@@ -59,6 +59,7 @@ public class OrderQueueTest {
         order.addPurchase(new Purchase("PROD0004", 450));
         order.addPurchase(new Purchase("PROD0006", 250));
         orderQueue.add(order);
+        orderQueue.setTimeReceived(order);
         
         long expResult = new Date().getTime();
         long result = order.getTimeReceived().getTime();
@@ -105,6 +106,7 @@ public class OrderQueueTest {
         order.addPurchase(new Purchase("PROD0004", 450));
         order.addPurchase(new Purchase("PROD0006", 250));
         orderQueue.add(order);
+        orderQueue.setTimeReceived(order);
         
         Order result = order;
         Order expResult = orderQueue.returnQueue();
@@ -113,7 +115,7 @@ public class OrderQueueTest {
     }
     
     @Test
-    public void RequestForOrderWithNoOrderInSystemThenThrowException() {
+    public void RequestForOrderWithNoOrderInSystemThenThrowNull() {
         OrderQueue orderQueue = new OrderQueue();
         
         Order expResult = orderQueue.returnQueue();
